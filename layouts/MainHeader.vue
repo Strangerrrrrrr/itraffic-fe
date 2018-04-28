@@ -38,7 +38,7 @@ export default {
         },
         {
           name: '驾驶证业务',
-          index: '/'
+          index: '/driverslicense'
         },
         {
           name: '在线留言',
