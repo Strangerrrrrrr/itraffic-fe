@@ -1,8 +1,7 @@
-import axios from 'axios'
+import axios from '../plugins/axios'
 
 export default function ({ route }) {
-  // return axios.post('http://my-stats-api.com', {
-  //   url: route.fullPath
-  // })
-  return
+  return function (req, res, next) {
+    return next()
+  }
 }

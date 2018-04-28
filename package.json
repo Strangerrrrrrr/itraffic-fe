@@ -18,13 +18,16 @@
     "@fortawesome/fontawesome-free-regular": "^5.0.10",
     "@fortawesome/fontawesome-free-solid": "^5.0.10",
     "@fortawesome/vue-fontawesome": "^0.0.22",
+    "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/proxy": "^1.2.4",
     "axios": "^0.18.0",
     "element-theme-ink": "^0.1.2",
     "element-ui": "^2.3.6",
     "node-sass": "^4.8.3",
     "nuxt": "^1.0.0",
     "sass-loader": "^7.0.1",
-    "vue-time": "^0.0.5"
+    "vue-time": "^0.0.5",
+    "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

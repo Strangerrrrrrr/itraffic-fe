@@ -49,5 +49,15 @@ module.exports = {
   },
   plugins: [
     {src:'~plugins/element-ui',ssr: true}
-  ]
+  ],
+  modules: [
+    '@nuxtjs/axios',
+  ],
+  axios: {
+    proxy: true,
+    baseURL: 'http://localhost:8000'
+  },
+  proxy: {
+    '/api/': 'http://localhost:8000'
+  }
 }

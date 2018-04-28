@@ -1,24 +1,26 @@
 <template>
   <div>
     <el-card>
-      <el-input placeholder="请输入发动机号后六位" v-model="engineID" prefix-icon="el-icon-info">
+      <el-form ref="searchForm" :model="searchForm">
+      <el-input placeholder="请输入发动机号后六位" v-model="searchForm.engineID" prefix-icon="el-icon-info">
         <template slot="prepend"></template>
       </el-input>
-      <el-input placeholder="请输入车牌号" v-model="license" class="input-with-select">
-        <el-select v-model="select" slot="prepend" placeholder="城市简称">
+      <el-input placeholder="请输入车牌号" v-model="searchForm.licenseNum" class="input-with-select">
+        <el-select v-model="selectProvince" slot="prepend" placeholder="城市简称">
           <el-option v-for="provinceItem in province" :key="provinceItem.abbr" :label="provinceItem.name + ' (' + provinceItem.abbr + ')'" :value="provinceItem.abbr"></el-option>
         </el-select>
-        <el-button type="primary" slot="append" icon="el-icon-search"></el-button>
+        <el-button type="primary" slot="append" icon="el-icon-search" @click="onSubmit"></el-button>
       </el-input>
+      </el-form>
     </el-card>
 
     <h4 class="text-center">
-      <span v-if="isIllegal">违章信息 x 条</span>
+      <span v-if="illegal_infos">违章信息 {{ illegal_infos.length }} 条</span>
       <span v-else>没有违章信息</span>
     </h4>
 
     <el-row :gutter="20">
-      <el-col :span="8" v-for="(illegalItem, key) in illegalInfo" :key="key">
+      <el-col :span="8" v-for="(illegalItem, key) in illegal_infos" :key="key">
         <el-card>
           <el-form ref="form" size="mini" label-width="80px" :model="illegalItem">
             <div slot="header" class="clearfix">
@@ -26,29 +28,29 @@
             </div>
 
             <template>
+              <el-form-item label="时间">
+                <el-tag> {{ illegalItem.created_at }}</el-tag>
+              </el-form-item>
               <el-form-item label="车牌号码">
-                <el-tag> {{ illegalItem.license }}</el-tag>
+                <el-tag color="#fff"> {{ illegalItem.license }}</el-tag>
               </el-form-item>
               <el-form-item label="发动机号">
-                <el-tag> {{ illegalItem.engineID }}</el-tag>
-              </el-form-item>
-              <el-form-item label="时间">
-                <el-tag> {{ illegalItem.time }}</el-tag>
+                <el-tag color="#fff"> {{ illegalItem.engineID }}</el-tag>
               </el-form-item>
               <el-form-item label="地点">
-                <el-tag> {{ illegalItem.location }}</el-tag>
+                <el-tag type="info"> {{ illegalItem.location }}</el-tag>
               </el-form-item>
               <el-form-item label="违章代码">
-                <el-tag> {{ illegalItem.code }}</el-tag>
-              </el-form-item>
-              <el-form-item label="描述">
-                <el-tag> {{ illegalItem.description }}</el-tag>
+                <el-tag type="warning"> {{ illegalItem.illegal_id }}</el-tag>
               </el-form-item>
               <el-form-item label="扣分">
-                <el-tag> {{ illegalItem.deduction }} 分</el-tag>
+                <el-tag type="danger"> {{ illegalItem.illegal_code.deduction }} 分</el-tag>
               </el-form-item>
               <el-form-item label="罚款">
-                <el-tag> {{ illegalItem.fine }} 元</el-tag>
+                <el-tag type="danger"> {{ illegalItem.illegal_code.fine }} 元</el-tag>
+              </el-form-item>
+              <el-form-item label="描述">
+                <el-card style="margin: 0px">{{ illegalItem.illegal_code.description }}</el-card>
               </el-form-item>
               <el-form-item>
                 <el-button plain name="submit">
@@ -73,10 +75,12 @@ export default {
   name: 'illegalInfo',
   data () {
     return {
-      isIllegal: true,
-      license: '',
-      engineID: '',
-      select: '',
+      selectProvince: '',
+      searchForm: {
+        licenseNum: '',
+        engineID: '',
+      },
+      illegal_infos: [],
       illegalInfo: [
         {
           license: '川A7D1E2',
@@ -88,26 +92,6 @@ export default {
           deduction: '2',
           fine: '100'
         },
-        {
-          license: '川A7D1E2',
-          engineID: '521263',
-          time: '2018-02-25 09:34:12',
-          location: '沈海高速3374公里',
-          code: '1001',
-          description: '机动车违反禁止标线指示',
-          deduction: '2',
-          fine: '100'
-        },
-        {
-          license: '川A7D1E2',
-          engineID: '521263',
-          time: '2018-02-25 09:34:12',
-          location: '沈海高速3374公里',
-          code: '1001',
-          description: '机动车违反禁止标线指示',
-          deduction: '2',
-          fine: '100'
-        }
       ],
       province: [
         {
@@ -231,6 +215,22 @@ export default {
           abbr: '琼'
         }
       ]
+    }
+  },
+  methods: {
+    onSubmit () {
+      let self = this
+      this.searchForm.license = this.selectProvince + this.searchForm.licenseNum
+      this.$axios.post('/api/illegal/search', this.searchForm)
+      .then(function(res){
+        if (res.data.illegal_infos) {
+          self.illegal_infos = res.data.illegal_infos
+          self.$message({
+            message: '查询成功',
+            type: 'success'
+          });
+        }
+      })
     }
   }
 }

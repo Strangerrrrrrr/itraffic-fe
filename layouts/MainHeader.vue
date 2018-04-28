@@ -4,8 +4,11 @@
       {{ menuItem.name }}
     </el-menu-item>
 
-    <el-menu-item v-if="isLogin" index="/user" style="float:right"> {{ username }} </el-menu-item>
-    <el-menu-item v-else index="/user/register" style="float:right"> 注册 </el-menu-item>
+    <el-menu-item v-if="$store.state.access_token" index="/user" style="float:right"> {{ username }} </el-menu-item>
+    <template v-else>
+      <el-menu-item index="/user/register" style="float:right"> 注册 </el-menu-item>
+      <el-menu-item index="/" style="float:right"> 登录 </el-menu-item>
+    </template>
   </el-menu>
 </template>
 
@@ -14,7 +17,6 @@ export default {
   name: 'MainHeader',
   data () {
     return {
-      isLogin: false,
       username: 'LRQ',
       router: true,
       menuItems: [
@@ -44,6 +46,9 @@ export default {
         }
       ]
     }
+  },
+  mounted () {
+    this.$store.getters.getStorage
   }
 }
 </script>
