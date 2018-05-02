@@ -15,11 +15,67 @@
     </el-card>
 
     <h4 class="text-center">
-      <span v-if="illegal_infos">违章信息 {{ illegal_infos.length }} 条</span>
-      <span v-else>没有违章信息</span>
+      <span v-if="my_illegal_infos!=0">我的违章信息 {{ my_illegal_infos.length }} 条</span>
+      <span v-else></span>
     </h4>
 
     <el-row :gutter="20">
+      <el-col :span="8" v-for="(illegalItem, key) in my_illegal_infos" :key="key">
+        <template v-if="illegalItem">
+        <el-card>
+          <el-form ref="form" size="mini" label-width="80px" :model="illegalItem">
+            <div slot="header" class="clearfix">
+              <span>违章记录</span>
+            </div>
+
+            <template>
+              <el-form-item label="时间">
+                <el-tag> {{ illegalItem.created_at }}</el-tag>
+              </el-form-item>
+              <el-form-item label="车牌号码">
+                <el-tag color="#fff"> {{ illegalItem.license }}</el-tag>
+              </el-form-item>
+              <el-form-item label="发动机号">
+                <el-tag color="#fff"> {{ illegalItem.engineID }}</el-tag>
+              </el-form-item>
+              <el-form-item label="地点">
+                <el-tag type="info"> {{ illegalItem.location }}</el-tag>
+              </el-form-item>
+              <el-form-item label="违章代码">
+                <el-tag type="warning"> {{ illegalItem.illegal_id }}</el-tag>
+              </el-form-item>
+              <el-form-item label="扣分">
+                <el-tag type="danger"> {{ illegalItem.illegal_code.deduction }} 分</el-tag>
+              </el-form-item>
+              <el-form-item label="罚款">
+                <el-tag type="danger"> {{ illegalItem.illegal_code.fine }} 元</el-tag>
+              </el-form-item>
+              <el-form-item label="描述">
+                <el-card style="margin: 0px">{{ illegalItem.illegal_code.description }}</el-card>
+              </el-form-item>
+               <el-form-item label="状态">
+                <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
+              </el-form-item>
+              <el-form-item>
+                <el-button plain name="submit">
+                  确认
+                </el-button>
+                <el-button plain>
+                  申诉
+                </el-button>
+              </el-form-item>
+            </template>
+
+          </el-form>
+        </el-card>
+        </template>
+      </el-col>
+
+      <h4 class="text-center">
+        <span v-if="illegal_infos!=0">违章信息 {{ illegal_infos.length }} 条</span>
+        <span v-else></span>
+      </h4>
+
       <el-col :span="8" v-for="(illegalItem, key) in illegal_infos" :key="key">
         <el-card>
           <el-form ref="form" size="mini" label-width="80px" :model="illegalItem">
@@ -52,6 +108,9 @@
               <el-form-item label="描述">
                 <el-card style="margin: 0px">{{ illegalItem.illegal_code.description }}</el-card>
               </el-form-item>
+               <el-form-item label="状态">
+                <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
+              </el-form-item>
               <el-form-item>
                 <el-button plain name="submit">
                   确认
@@ -75,24 +134,15 @@ export default {
   name: 'illegalInfo',
   data () {
     return {
+      data: '',
+      drivingLicenseInfos: '',
       selectProvince: '',
       searchForm: {
         licenseNum: '',
         engineID: '',
       },
       illegal_infos: [],
-      illegalInfo: [
-        {
-          license: '川A7D1E2',
-          engineID: '521263',
-          time: '2018-02-25 09:34:12',
-          location: '沈海高速3374公里',
-          code: '1001',
-          description: '机动车违反禁止标线指示',
-          deduction: '2',
-          fine: '100'
-        },
-      ],
+      my_illegal_infos: [],
       province: [
         {
           name: '北京',
@@ -217,18 +267,47 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getMyInfo()
+  },
   methods: {
     onSubmit () {
       let self = this
       this.searchForm.license = this.selectProvince + this.searchForm.licenseNum
-      this.$axios.post('/api/illegal/search', this.searchForm)
+      this.searchIllegalInfo(this.searchForm).then(function(res){
+        self.illegal_infos = res
+      })
+      this.my_illegal_infos = []
+    },
+    async searchIllegalInfo (searchForm) {
+      let self = this
+      return this.$axios.post('/api/illegal/search', searchForm)
       .then(function(res){
         if (res.data.illegal_infos) {
-          self.illegal_infos = res.data.illegal_infos
+          self.data = res.data.illegal_infos
           self.$message({
             message: '查询成功',
             type: 'success'
           });
+        }
+        return self.data
+      })
+    },
+    async getMyInfo () {
+      let self = this
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.$axios.get('/api/drivinglicense/show')
+        .then(function(res){
+        self.drivingLicenseInfos = res.data
+        for (let i=0; i < self.drivingLicenseInfos.length; i++) {
+          let illegalInfos = self.searchIllegalInfo(self.drivingLicenseInfos[i])
+          illegalInfos.then(function(res){
+            for (let j=0; j < res.length; j++) {
+              self.my_illegal_infos.push(res[j])
+              console.log(self.my_illegal_infos)
+            }
+          })
+
         }
       })
     }

@@ -10,7 +10,8 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.5",
@@ -24,7 +25,7 @@
     "element-theme-ink": "^0.1.2",
     "element-ui": "^2.3.6",
     "node-sass": "^4.8.3",
-    "nuxt": "^1.0.0",
+    "nuxt": "^1.4.0",
     "sass-loader": "^7.0.1",
     "vue-time": "^0.0.5",
     "whatwg-fetch": "^2.0.4"

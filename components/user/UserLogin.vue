@@ -8,16 +8,16 @@
 
       <template v-if="$store.state.access_token">
         <el-form-item label="当前用户">
-            <el-tag>lrq</el-tag>
+            <el-tag>{{ userInfo.name }}</el-tag>
         </el-form-item>
         <el-form-item label="姓名">
-            <el-tag>陆冉钦</el-tag>
+            <el-tag>{{ userInfo.real_name }}</el-tag>
         </el-form-item>
         <el-form-item label="联系方式">
-            <el-tag>13301611706</el-tag>
+            <el-tag>{{ userInfo.phone }}</el-tag>
         </el-form-item>
         <el-form-item label="身份证号">
-            <el-tag>320585199601081616</el-tag>
+            <el-tag>{{ userInfo.identity }}</el-tag>
         </el-form-item>
         <el-form-item>
             <el-button plain @click="Logout"> 注销 </el-button>
@@ -61,7 +61,14 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
         ]
-      }
+      },
+      userInfo: ''
+    }
+  },
+  mounted () {
+    if (this.$store.state.access_token) {
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.getUserInfo()
     }
   },
   methods: {
@@ -84,6 +91,7 @@ export default {
               });
               self.$axios.setToken(res.access_token, 'Bearer')
               self.$store.commit('SET_ACCESS_TOKEN', res.access_token)
+              self.getUserInfo()
             }
           })
           .catch(function(e){
@@ -104,6 +112,7 @@ export default {
       });
     },
     Logout () {
+      let self = this
       this.$axios.$delete('/api/authorizations/current')
       .then(function(res){
         self.$message({
@@ -113,6 +122,13 @@ export default {
       })
       this.$axios.setToken(false)
       this.$store.commit('SET_ACCESS_TOKEN', null)
+    },
+    getUserInfo (){
+      let self = this
+      this.$axios.get('/api/user')
+      .then(function(res){
+        self.userInfo = res.data
+      })
     }
   }
 }
