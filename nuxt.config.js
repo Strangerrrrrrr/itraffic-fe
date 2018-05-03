@@ -17,7 +17,9 @@ module.exports = {
       { rel: 'stylesheet', href: '/fontawesome-free-5.0.10/svg-with-js/css/fa-svg-with-js.css' }
     ],
     script: [
-      { src: '/fontawesome-free-5.0.10/svg-with-js/js/fontawesome-all.min.js' }
+      { src: '/fontawesome-free-5.0.10/svg-with-js/js/fontawesome-all.min.js' },
+      // { src: '//cdn1.lncld.net/static/js/3.0.4/av-min.js' },
+      { src: '/Valine.min.js' },
     ]
   },
   /*
@@ -48,7 +50,7 @@ module.exports = {
     }
   },
   plugins: [
-    {src:'~plugins/element-ui',ssr: true},
+    {src:'~plugins/element-ui', ssr: true},
   ],
   modules: [
     '@nuxtjs/axios',

@@ -6489,9 +6489,9 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-valine@^1.1.9-beta9:
-  version "1.1.9-beta9"
-  resolved "https://registry.yarnpkg.com/valine/-/valine-1.1.9-beta9.tgz#1da3751bee89994b72f63032d9f5b3581ddbcda8"
+valine@1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/valine/-/valine-1.1.8.tgz#a8b7af7ed1f39d03fb0d168bc0b917295b72e44c"
 
 vary@~1.1.2:
   version "1.1.2"
