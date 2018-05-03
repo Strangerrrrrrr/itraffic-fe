@@ -16,6 +16,9 @@
           </el-form-item>
           <el-form-item label="到期日期">
             <el-tag>{{ deadline() }}</el-tag>
+            <el-button plain name="submit" @click="onSubmit">
+              预约换证
+            </el-button>
           </el-form-item>
           <el-form-item label="更新时间">
             <el-tag>{{ updatetime() }}</el-tag>
@@ -24,18 +27,15 @@
             <el-tag>{{ dlInfo.grade }}</el-tag>
             <el-button plain name="submit" @click="onSubmit">
               预约考试
-            </el-button>
-          </el-form-item>
+            </el-button>           
+          </el-form-item>          
           <el-form-item label="家庭住址" prop="address">
             <el-input v-model="dlInfo.address"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button plain name="submit" @click="onSubmit">
               修改
-            </el-button>
-            <el-button plain name="submit" @click="onSubmit">
-              预约换证
-            </el-button>
+            </el-button>            
           </el-form-item>
       </el-form>
     </el-card>
@@ -46,9 +46,11 @@
 export default {
   data () {
     return {
-      dlInfo: ''
+      dlInfo: '',
+      title: '驾驶证'
     }
   },
+  middleware: 'auth',
   mounted () {
     this.dlshow()
   },

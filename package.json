@@ -27,6 +27,7 @@
     "node-sass": "^4.8.3",
     "nuxt": "^1.4.0",
     "sass-loader": "^7.0.1",
+    "valine": "^1.1.9-beta9",
     "vue-time": "^0.0.5",
     "whatwg-fetch": "^2.0.4"
   },

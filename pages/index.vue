@@ -25,7 +25,13 @@ import UserLogin from '~/components/user/UserLogin.vue'
 export default {
   data () {
     return {
-      version: ''
+      version: '',
+      title: '主页 | 交通违章一站式处理'
+    }
+  },
+  head () {
+    return {
+      title: this.title,
     }
   },
   components: {
@@ -35,7 +41,9 @@ export default {
     UserLogin
   },
   mounted () {
-    this.test()
+    if (!this.$store.state.access_token) {
+      this.prompt()
+    }
   },
   computed: {
   // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -45,11 +53,19 @@ export default {
     ])
   },
   methods: {
-    async test() {
-      let version = await this.$axios.$get('/api/version')
-      this.version = version
-      console.log(version)
-    }
+    prompt () {
+      if (this.$store.state.tempInfo) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: this.$store.state.tempInfo
+        })
+        this.$store.commit('SET_TEMP_INFO', '')
+      }
+    },
+  },
+  watch: {
+    '$store.state.tempInfo': 'prompt'
   }
 }
 </script>

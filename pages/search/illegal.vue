@@ -268,7 +268,9 @@ export default {
     }
   },
   mounted () {
-    this.getMyInfo()
+    if (this.$store.state.access_token) {
+      this.getMyInfo()
+    }
   },
   methods: {
     onSubmit () {
@@ -304,7 +306,6 @@ export default {
           illegalInfos.then(function(res){
             for (let j=0; j < res.length; j++) {
               self.my_illegal_infos.push(res[j])
-              console.log(self.my_illegal_infos)
             }
           })
 

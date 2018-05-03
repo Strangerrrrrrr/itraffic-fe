@@ -8,8 +8,9 @@ require('whatwg-fetch')
 const key = 'access_token'
 const store = () => new Vuex.Store({
   state: {
-    authUser: null,
-    access_token: null
+    username: '',
+    access_token: '',
+    tempInfo: ''
   },
   getters: {
     getStorage: function (state) {
@@ -20,13 +21,16 @@ const store = () => new Vuex.Store({
     }
   },
   mutations: {
-    SET_USER: function (state, user) {
-      state.authUser = user
+    SET_USERNAME: function (state, username) {
+      state.usernam = username
     },
     SET_ACCESS_TOKEN (state, token) {
       state.access_token = token
       localStorage.setItem('access_token', token)
     },
+    SET_TEMP_INFO (state, tempInfo) {
+      state.tempInfo = tempInfo
+    }
   },
 })
 

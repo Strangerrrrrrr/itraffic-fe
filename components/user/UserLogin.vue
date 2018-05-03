@@ -6,7 +6,7 @@
     </div>
     <el-form ref="loginForm" label-position="left" label-width="80px" size="small" :model="loginForm" :rules="rules">
 
-      <template v-if="$store.state.access_token">
+      <template v-if="$store.state.access_token!=''">
         <el-form-item label="当前用户">
             <el-tag>{{ userInfo.name }}</el-tag>
         </el-form-item>
@@ -86,6 +86,7 @@ export default {
           .then(function(res){
             if (res.access_token) {
               self.$message({
+                showClose: true,
                 message: '登陆成功',
                 type: 'success'
               });
@@ -104,6 +105,7 @@ export default {
               }
             }
             self.$message({
+                showClose: true,
                 message: message,
                 type: 'error'
             });
@@ -116,12 +118,14 @@ export default {
       this.$axios.$delete('/api/authorizations/current')
       .then(function(res){
         self.$message({
+          showClose: true,
           message: '注销成功',
           type: 'success'
         });
       })
       this.$axios.setToken(false)
-      this.$store.commit('SET_ACCESS_TOKEN', null)
+      this.$store.commit('SET_ACCESS_TOKEN', '')
+      this.$store.commit('SET_USERNAME', '')
     },
     getUserInfo (){
       let self = this
@@ -129,6 +133,7 @@ export default {
       .then(function(res){
         self.userInfo = res.data
       })
+      this.$store.commit('SET_USERNAME', this.userInfo.name)
     }
   }
 }
