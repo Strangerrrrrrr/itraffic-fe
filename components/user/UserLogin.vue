@@ -67,7 +67,6 @@ export default {
   },
   mounted () {
     if (this.$store.state.access_token) {
-      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
       this.getUserInfo()
     }
   },
@@ -129,11 +128,14 @@ export default {
     },
     getUserInfo (){
       let self = this
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
       this.$axios.get('/api/user')
       .then(function(res){
         self.userInfo = res.data
+        if (self.userInfo.name) {
+          self.$store.commit('SET_USERNAME', self.userInfo.name)
+        }
       })
-      this.$store.commit('SET_USERNAME', this.userInfo.name)
     }
   }
 }

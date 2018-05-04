@@ -10,7 +10,8 @@ const store = () => new Vuex.Store({
   state: {
     username: '',
     access_token: '',
-    tempInfo: ''
+    tempInfo: '',
+    valine: false,
   },
   getters: {
     getStorage: function (state) {
@@ -22,7 +23,7 @@ const store = () => new Vuex.Store({
   },
   mutations: {
     SET_USERNAME: function (state, username) {
-      state.usernam = username
+      state.username = username
     },
     SET_ACCESS_TOKEN (state, token) {
       state.access_token = token
@@ -30,6 +31,9 @@ const store = () => new Vuex.Store({
     },
     SET_TEMP_INFO (state, tempInfo) {
       state.tempInfo = tempInfo
+    },
+    SET_VALINE: function (state, valine) {
+      state.valine = valine
     }
   },
 })

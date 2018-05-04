@@ -4,7 +4,7 @@
       {{ menuItem.name }}
     </el-menu-item>
 
-    <el-menu-item v-if="$store.state.username" index="/user" style="float:right"> {{ $store.state.username }} </el-menu-item>
+    <el-menu-item v-if="$store.state.username!=''" index="/user" style="float:right"> {{ $store.state.username }} </el-menu-item>
     <template v-else>
       <el-menu-item index="/user/register" style="float:right"> 注册 </el-menu-item>
       <el-menu-item index="/" style="float:right"> 登录 </el-menu-item>
@@ -41,7 +41,7 @@ export default {
         },
         {
           name: '在线留言',
-          index: '/msgBoard'
+          index: '/msgboard'
         }
       ]
     }
@@ -60,6 +60,13 @@ export default {
   methods: {
     
   },
+  watch: {
+    '$route' (to, from) {
+      if (from.path != '/msgboard' && to.path == '/msgboard') {
+        this.$router.go(0)
+      }
+    }
+  }
 }
 </script>
 

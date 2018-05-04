@@ -15,6 +15,7 @@
         </el-tooltip>
       </span>
     </div>
+    <hr>
   </div>
 </template>
 

@@ -18,8 +18,6 @@ module.exports = {
     ],
     script: [
       { src: '/fontawesome-free-5.0.10/svg-with-js/js/fontawesome-all.min.js' },
-      // { src: '//cdn1.lncld.net/static/js/3.0.4/av-min.js' },
-      { src: '/Valine.min.js' },
     ]
   },
   /*
@@ -30,7 +28,8 @@ module.exports = {
   ** Build configuration
   */
   css: [
-    'element-ui/lib/theme-chalk/index.css',
+    // 'element-ui/lib/theme-chalk/index.css',
+    'element-theme-ink/lib/index.css',
     '~assets/css/app.scss'
   ],
   build: {
@@ -51,6 +50,7 @@ module.exports = {
   },
   plugins: [
     {src:'~plugins/element-ui', ssr: true},
+    {src:'~plugins/valine', ssr: false},
   ],
   modules: [
     '@nuxtjs/axios',
