@@ -5,6 +5,9 @@
       <span> 陆冉钦 </span>
       <i class="fas fa-cloud"></i>
       {{ copyright }}
+      <hr>
+      <span>{{ theme }}</span>
+      <hr>
     </div>
     <div class="link">
       <span v-for="(link, key) in links" :key="key">
@@ -25,6 +28,7 @@ export default {
   data () {
     return {
       copyright: '交通违章一站式处理',
+      theme: 'Element-Theme-Ink',
       links: {
         github: {
           color: 'black',

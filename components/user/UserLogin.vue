@@ -4,7 +4,7 @@
         <span v-if="$store.state.access_token">用户信息</span>
         <span v-else>用户登录</span>
     </div>
-    <el-form ref="loginForm" label-position="left" label-width="80px" size="small" :model="loginForm" :rules="rules">
+    <el-form ref="loginForm" label-position="left" label-width="80px" size="small" :model="loginForm" :rules="rules" @keyup.enter.native="onSubmit">
 
       <template v-if="$store.state.access_token!=''">
         <el-form-item label="当前用户">
@@ -125,6 +125,7 @@ export default {
       this.$axios.setToken(false)
       this.$store.commit('SET_ACCESS_TOKEN', '')
       this.$store.commit('SET_USERNAME', '')
+      this.$store.commit('SET_USER_ID', '')
     },
     getUserInfo (){
       let self = this
@@ -134,6 +135,7 @@ export default {
         self.userInfo = res.data
         if (self.userInfo.name) {
           self.$store.commit('SET_USERNAME', self.userInfo.name)
+          self.$store.commit('SET_USER_ID', self.user_id)
         }
       })
     }

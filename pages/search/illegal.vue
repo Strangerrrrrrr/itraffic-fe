@@ -22,52 +22,7 @@
     <el-row :gutter="20">
       <el-col :span="8" v-for="(illegalItem, key) in my_illegal_infos" :key="key">
         <template v-if="illegalItem">
-        <el-card>
-          <el-form ref="form" size="mini" label-width="80px" :model="illegalItem">
-            <div slot="header" class="clearfix">
-              <span>违章记录</span>
-            </div>
-
-            <template>
-              <el-form-item label="时间">
-                <el-tag> {{ illegalItem.created_at }}</el-tag>
-              </el-form-item>
-              <el-form-item label="车牌号码">
-                <el-tag color="#fff"> {{ illegalItem.license }}</el-tag>
-              </el-form-item>
-              <el-form-item label="发动机号">
-                <el-tag color="#fff"> {{ illegalItem.engineID }}</el-tag>
-              </el-form-item>
-              <el-form-item label="地点">
-                <el-tag type="info"> {{ illegalItem.location }}</el-tag>
-              </el-form-item>
-              <el-form-item label="违章代码">
-                <el-tag type="warning"> {{ illegalItem.illegal_id }}</el-tag>
-              </el-form-item>
-              <el-form-item label="扣分">
-                <el-tag type="danger"> {{ illegalItem.illegal_code.deduction }} 分</el-tag>
-              </el-form-item>
-              <el-form-item label="罚款">
-                <el-tag type="danger"> {{ illegalItem.illegal_code.fine }} 元</el-tag>
-              </el-form-item>
-              <el-form-item label="描述">
-                <el-card style="margin: 0px">{{ illegalItem.illegal_code.description }}</el-card>
-              </el-form-item>
-               <el-form-item label="状态">
-                <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
-              </el-form-item>
-              <el-form-item>
-                <el-button plain name="submit">
-                  确认
-                </el-button>
-                <el-button plain>
-                  申诉
-                </el-button>
-              </el-form-item>
-            </template>
-
-          </el-form>
-        </el-card>
+          <user-illegal-info :illegalItem="illegalItem"></user-illegal-info>
         </template>
       </el-col>
 
@@ -83,7 +38,6 @@
               <span>违章记录</span>
             </div>
 
-            <template>
               <el-form-item label="时间">
                 <el-tag> {{ illegalItem.created_at }}</el-tag>
               </el-form-item>
@@ -111,15 +65,6 @@
                <el-form-item label="状态">
                 <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
               </el-form-item>
-              <el-form-item>
-                <el-button plain name="submit">
-                  确认
-                </el-button>
-                <el-button plain>
-                  申诉
-                </el-button>
-              </el-form-item>
-            </template>
 
           </el-form>
         </el-card>
@@ -130,11 +75,15 @@
 </template>
 
 <script>
+import UserIllegalInfo from '~/components/user/UserIllegalInfo'
+import UserComplain from '~/components/user/UserComplain.vue'
+
 export default {
   name: 'illegalInfo',
   data () {
     return {
       data: '',
+      isSure: '',
       drivingLicenseInfos: '',
       selectProvince: '',
       searchForm: {
@@ -267,6 +216,10 @@ export default {
       ]
     }
   },
+  components: {
+    UserIllegalInfo,
+    UserComplain
+  },
   mounted () {
     if (this.$store.state.access_token) {
       this.getMyInfo()
@@ -288,6 +241,7 @@ export default {
         if (res.data.illegal_infos) {
           self.data = res.data.illegal_infos
           self.$message({
+            showClose: true,
             message: '查询成功',
             type: 'success'
           });
@@ -308,7 +262,6 @@ export default {
               self.my_illegal_infos.push(res[j])
             }
           })
-
         }
       })
     }

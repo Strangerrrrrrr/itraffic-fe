@@ -1,25 +1,14 @@
 <template>
   <div>
-    <el-row class="tac">
-  <el-col :span="12">
-    <el-menu
-      default-active="2"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose">
-      <el-submenu index="1">
-        <template slot="title">
-          <span>查看个人信息</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="1-1" @click="origin">个人基本信息</el-menu-item>
-          <el-menu-item index="1-2" @click="dlinfo">驾驶证信息</el-menu-item>
-          <el-menu-item index="1-1" @click="dllinfo">行驶证信息</el-menu-item>
-          <el-menu-item index="1-2" @click="password">修改密码</el-menu-item>
-        </el-menu-item-group>
-       </el-submenu>
-    </el-menu>
-  </el-col>
+    <el-row>
+      <el-col :span="24">
+        <el-tabs type="border-card">
+          <el-tab-pane label="基本信息">基本信息</el-tab-pane>
+          <el-tab-pane label="驾驶证信息">驾驶证信息</el-tab-pane>
+          <el-tab-pane label="行驶证信息">行驶证信息</el-tab-pane>
+          <el-tab-pane label="修改密码">修改密码</el-tab-pane>
+        </el-tabs>
+      </el-col>
     </el-row>
   </div>
 </template>

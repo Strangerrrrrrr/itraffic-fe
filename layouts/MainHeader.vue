@@ -4,7 +4,7 @@
       {{ menuItem.name }}
     </el-menu-item>
 
-    <el-menu-item v-if="$store.state.username!=''" index="/user" style="float:right"> {{ $store.state.username }} </el-menu-item>
+    <el-menu-item v-if="username" index="/user" style="float:right"> {{ username }} </el-menu-item>
     <template v-else>
       <el-menu-item index="/user/register" style="float:right"> 注册 </el-menu-item>
       <el-menu-item index="/" style="float:right"> 登录 </el-menu-item>
@@ -17,6 +17,7 @@ export default {
   name: 'MainHeader',
   data () {
     return {
+      username: this.$store.state.username,
       router: true,
       menuItems: [
         {
@@ -47,6 +48,7 @@ export default {
     }
   },
   mounted () {
+    this.username = this.$store.state.username
     this.$store.getters.getStorage
     if (this.$store.state.tempInfo) {
       this.active = '/'
@@ -65,6 +67,9 @@ export default {
       if (from.path != '/msgboard' && to.path == '/msgboard') {
         this.$router.go(0)
       }
+    },
+    '$store.state.username' () {
+      this.username = this.$store.state.username
     }
   }
 }
