@@ -13,7 +13,7 @@
               {{ userInfo.phone }}
             </el-form-item>
             <el-form-item label="考试机号：">
-              {{ dlInfo.vehicle_type }}
+              {{ dlInfo.id }}
             </el-form-item>
             <el-form-item label="考试时间：" 
                 v-model="booktime"

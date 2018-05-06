@@ -86,6 +86,10 @@ export default {
           name: '上海',
           abbr: '沪'
         },
+        {
+          name: '江苏',
+          abbr: '苏'
+        },
       ]
     }
   },

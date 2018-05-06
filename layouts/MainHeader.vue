@@ -25,7 +25,7 @@ export default {
         },
         {
           name: '交规宣传栏',
-          index: '/'
+          index: '/publicboard'
         },
         {
           name: '违章信息查询',

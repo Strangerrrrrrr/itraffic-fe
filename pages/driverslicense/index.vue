@@ -1,43 +1,48 @@
 <template>
   <el-row>
     <el-card>
-      <el-form label-position="left" label-width="100px" v-model="dlInfo">
-          <el-form-item label="姓名">
-            <el-tag id="name" name="name">{{ dlInfo.	real_name }}</el-tag>
-          </el-form-item>
-          <el-form-item label="身份证">
-            <el-tag>{{ dlInfo.identity }}</el-tag> 
-          </el-form-item>
-          <el-form-item label="准驾车型">
-            <el-tag>{{ dlInfo.vehicle_type }}</el-tag>
-          </el-form-item>
-          <el-form-item label="领证日期">
-            <el-tag>{{ receivetime() }}</el-tag>
-          </el-form-item>
-          <el-form-item label="到期日期">
-            <el-tag>{{ deadline() }}</el-tag>           
-          </el-form-item>
-          <el-form-item label="更新时间">
-            <el-tag>{{ updatetime() }}</el-tag>
-          </el-form-item>
-          <el-form-item label="剩余分数">
-            <el-tag>{{ dlInfo.grade }}</el-tag>         
-          </el-form-item>          
-          <el-form-item label="家庭住址" prop="address">
-            <el-input v-model="dlInfo.address"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button plain name="submit" @click="onSubmit">
-              修改
-            </el-button> 
-            <el-button plain name="submit" @click="onSubmit">
-              预约换证
-            </el-button>
-            <el-button plain name="submit" @click="onConfirm">
-              预约考试
-            </el-button>  
-          </el-form-item>
-      </el-form>
+      <template v-if="dlInfo">
+        <el-form label-position="left" label-width="100px" v-model="dlInfo">
+            <el-form-item label="姓名">
+              <el-tag id="name" name="name">{{ dlInfo.	real_name }}</el-tag>
+            </el-form-item>
+            <el-form-item label="身份证">
+              <el-tag>{{ dlInfo.identity }}</el-tag> 
+            </el-form-item>
+            <el-form-item label="准驾车型">
+              <el-tag>{{ dlInfo.vehicle_type }}</el-tag>
+            </el-form-item>
+            <el-form-item label="领证日期">
+              <el-tag>{{ receivetime() }}</el-tag>
+            </el-form-item>
+            <el-form-item label="到期日期">
+              <el-tag>{{ deadline() }}</el-tag>           
+            </el-form-item>
+            <el-form-item label="更新时间">
+              <el-tag>{{ updatetime() }}</el-tag>
+            </el-form-item>
+            <el-form-item label="剩余分数">
+              <el-tag>{{ dlInfo.grade }}</el-tag>         
+            </el-form-item>          
+            <el-form-item label="家庭住址" prop="address">
+              <el-input v-model="dlInfo.address"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button plain name="submit" @click="onSubmit">
+                修改
+              </el-button> 
+              <el-button plain name="submit" @click="onSubmit">
+                预约换证
+              </el-button>
+              <el-button plain name="submit" @click="onConfirm">
+                预约考试
+              </el-button>  
+            </el-form-item>
+        </el-form>
+      </template>
+      <template v-else>
+      <h3>您当前还没有驾驶证，暂时无法为您提供服务哦~</h3>
+      </template>
     </el-card>
   </el-row>
 </template>
@@ -60,7 +65,15 @@ export default {
       this.$axios.setToken(this.$store.state.access_token, 'Bearer')
       this.$axios.get('/api/driverslicense/show')
       .then(function(res){
-        self.dlInfo = res.data
+        if (res.data) {
+          self.dlInfo = res.data
+        } else {
+          self.$message({
+            showClose: true,
+            message: '您当前还未获得驾驶证！',
+            type: 'error'
+          })
+        }
       })
     },
     onSubmit () {
