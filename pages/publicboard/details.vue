@@ -1,8 +1,7 @@
 <template>
   <el-card>
     <div slot="header">
-        <span>交规宣传栏</span>
-        <el-button style="float: right; padding: 3px 0" type="text"  @click="onLook">更多 &gt;&gt;&gt;</el-button>
+        <span>{{ item.title }}</span>
     </div>
     <div class="text item" v-for="(item, key) in newsInfo.data" :key="key">
         <i class="fas fa-info-circle"></i>
@@ -32,9 +31,6 @@ export default {
       .then(function(res){
         self.newsInfo = res.data
       })
-    },
-    onLook () {
-      this.$router.push({path:'/publicboard'})
     }
   },
 }
