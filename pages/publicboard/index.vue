@@ -1,22 +1,29 @@
 <template>
   <el-card>
     <div slot="header">
-        <span>交规宣传栏</span>
+      <span>交规宣传栏</span>
     </div>
-    <div class="text item" v-for="(item, key) in newsInfo.data" :key="key">
-        <i class="fas fa-info-circle"></i>
-        <a href="">
-          {{ item.title }}
-          <span style="float:right;"> {{ item.created_at }} </span>
-        </a>
+    <div class="text item" v-for="item in newsInfo.data" :key="item.id">
+      <i class="fas fa-info-circle"></i>
+      <a :href="'/news?id=' + item.id">
+        {{ item.title }}
+        <span style="float:right;"> {{ item.created_at }} </span>
+      </a>
     </div>
     <div class="block">
-       <span class="demonstration"></span>
-       <el-pagination
-       layout="prev, pager, next"
-      :total="1000">
-  </el-pagination>
-</div>
+      <span class="demonstration"></span>
+      <el-pagination
+        background
+        layout="total, prev, pager, next, jumper"
+        :total="newsInfo.total"
+        :current-page="newsInfo.current_page"
+        :page-size="newsInfo.per_page"
+        @current-change="handleCurrentChange"
+        @prev-click="prev"
+        @next-click="next"
+        >
+      </el-pagination>
+    </div>
   </el-card>
 </template>
 
@@ -29,15 +36,28 @@ export default {
     }
   },
   mounted(){
-    this.getNewsInfo()
+    this.getNewsInfo(1)
   },
   methods: {
-    getNewsInfo () {
+    getNewsInfo (page) {
       let self = this
-      this.$axios.get('/api/publicboard/show')
+      this.$axios.get('/api/publicboard/show?page=' + page)
       .then(function(res){
         self.newsInfo = res.data
       })
+    },
+    handleCurrentChange (page) {
+      this.getNewsInfo(page)
+    },
+    prev () {
+      if (this.newsInfo.prev_page_url) {
+        this.getNewsInfo(this.newsInfo.prev_page_url[this.newsInfo.prev_page_url.length-1])
+      }
+    },
+    next () {
+      if (this.newsInfo.next_page_url) {
+        this.getNewsInfo(this.newsInfo.next_page_url[this.newsInfo.next_page_url.length-1])
+      }
     }
   },
 }
