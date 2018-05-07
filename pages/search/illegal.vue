@@ -22,7 +22,7 @@
     <el-row :gutter="20">
       <el-col :span="8" v-for="(illegalItem, key) in my_illegal_infos" :key="key">
         <template v-if="illegalItem">
-          <user-illegal-info :illegalItem="illegalItem"></user-illegal-info>
+          <user-illegal-info :userInfo="userInfo" :illegalItem="illegalItem"></user-illegal-info>
         </template>
       </el-col>
 
@@ -82,6 +82,7 @@ export default {
   name: 'illegalInfo',
   data () {
     return {
+      userInfo: '',
       data: '',
       isSure: '',
       drivingLicenseInfos: '',
@@ -223,6 +224,7 @@ export default {
   mounted () {
     if (this.$store.state.access_token) {
       this.getMyInfo()
+      this.getUserInfo()
     }
   },
   methods: {
@@ -264,7 +266,19 @@ export default {
           })
         }
       })
-    }
+    },
+    getUserInfo (){
+      let self = this
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.$axios.get('/api/user')
+      .then(function(res){
+        self.userInfo = res.data
+        if (self.userInfo.name) {
+          self.$store.commit('SET_USERNAME', self.userInfo.name)
+          self.$store.commit('SET_USER_ID', self.userInfo.id)
+        }
+      })
+    },
   }
 }
 </script>

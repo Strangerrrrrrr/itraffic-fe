@@ -7,7 +7,7 @@
     <el-menu-item v-if="username" index="/user" style="float:right"> {{ username }} </el-menu-item>
     <template v-else>
       <el-menu-item index="/user/register" style="float:right"> 注册 </el-menu-item>
-      <el-menu-item index="/" style="float:right"> 登录 </el-menu-item>
+      <el-menu-item index="/user/login" style="float:right"> 登录 </el-menu-item>
     </template>
   </el-menu>
 </template>

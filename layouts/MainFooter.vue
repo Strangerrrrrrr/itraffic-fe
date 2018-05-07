@@ -6,7 +6,7 @@
       <i class="fas fa-cloud"></i>
       {{ copyright }}
       <hr>
-      <span>{{ theme }}</span>
+      <span @click="goToTheme">{{ theme }}</span>
       <hr>
     </div>
     <div class="link">
@@ -59,6 +59,12 @@ export default {
   },
   components: {
     
+  },
+  methods: {
+    goToTheme () {
+      let href = "https://ink.yunyoujun.cn"
+      window.open(href, '_blank')
+    }
   }
 }
 </script>

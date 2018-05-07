@@ -6,7 +6,9 @@
       </el-col>
       <el-col :md="{span: 6}" :xs="{span: 24}">
         <notice-board/>
-        <user-login/>
+        <template v-if="this.$store.state.access_token">
+          
+        </template>
       </el-col>
     </el-row>
   </div>
@@ -19,14 +21,13 @@ import AppLogo from '~/components/AppLogo.vue'
 import NoticeBoard from '~/components/NoticeBoard.vue'
 import PublicBoard from '~/components/PublicBoard.vue'
 
-import UserLogin from '~/components/user/UserLogin.vue'
 
 
 export default {
   data () {
     return {
       version: '',
-      title: '主页 | 交通违章一站式处理'
+      title: '主页 | 交通违章一站式处理',
     }
   },
   head () {
@@ -38,7 +39,6 @@ export default {
     AppLogo,
     NoticeBoard,
     PublicBoard,
-    UserLogin
   },
   mounted () {
     if (!this.$store.state.access_token) {
