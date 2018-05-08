@@ -3,6 +3,7 @@
     <el-col :xs='{span: 24}' :md='{span: 8, offset: 8}'>
       <el-card>
         <el-form label-position="left" label-width="100px" v-model="examInfo">
+            <h3 style="text-align: center">准考证</h3><br>
             <el-form-item label="考生姓名：">
               {{ userInfo.real_name }}
             </el-form-item>
@@ -10,56 +11,22 @@
               {{ userInfo.identity }}
             </el-form-item>
             <el-form-item label="考试地点：">
-              {{ userInfo.phone }}
+              {{ AdInfo.exam_room }}
             </el-form-item>
             <el-form-item label="考试机号：">
-              {{ dlInfo.id }}
+              {{ AdInfo.id }}
             </el-form-item>
-            <el-form-item label="考试时间：" 
-                v-model="booktime"
-                type="date"
-                placeholder="选择日期"
-                value-format="timestamp"
-                :disabled='true'>
-              {{ booktime }}           
+            <el-form-item label="考试时间：" ><span>9：00</span>
             </el-form-item>
-            <el-form-item label="考试日期">
-              <el-date-picker
-                v-model="booktime"
-                type="date"
-                placeholder="选择日期"
-                value-format="timestamp"
-                :disabled='true'>
-              </el-date-picker>        
+            <el-form-item label="考试日期：">
+              {{ examdate() }}
             </el-form-item>
-            <el-form-item label="备注">
-              <el-select v-model="examInfo.region" placeholder="请选择报考城市" @change="getExamCenterInfo">
-                <el-option 
-                v-for="provinceItem in province"
-                :key="provinceItem.abbr" 
-                :label="provinceItem.name"
-                :value="provinceItem.name">
-                </el-option>
-              </el-select>
+            <el-form-item label="报考科目："> 科目一      
             </el-form-item>
-            <el-form-item>
-              <el-select v-model="examInfo.exam_room" placeholder="请选择考点">
-                <el-option
-                  v-for="(item, key) in examCenterInfo"
-                  :key="key"
-                  :label="item.exam_room"
-                  :value="item.id">
-                </el-option>
-              </el-select>  
+            <el-form-item label="备注：">
+             <span>请考生自行打印该准考证并于考试当天携带此准考证以及身份证前往报名的地点参加机动车科目一考试。考试开始时间为上午9：00整，8：45方可入场，超过考试时间15分钟后视为自动放弃考试。</span>
             </el-form-item>
-            <el-form-item label="报考科目">
-              <el-tag>科目一</el-tag>         
-            </el-form-item>   
-             <el-form-item>
-            <el-button plain name="submit" @click="onBook">
-              确认信息
-            </el-button> 
-            </el-form-item>
+            
         </el-form>
       </el-card>
     </el-col>
@@ -71,6 +38,7 @@ export default {
   data () {
     return {
       dlInfo: '',
+      AdInfo: '',
       userInfo: '',
       value: '',
       examInfo: {
@@ -98,6 +66,7 @@ export default {
   mounted () {
     this.getUserInfo()
     this.dlshow()
+    this.getAdInfo()
   },
   methods: {
     getExamCenterInfo () {
@@ -132,23 +101,22 @@ export default {
       .then(function(res){
         self.dlInfo = res.data
       })
-    }
-  },
-  computed: {
-    booktime () {
-      let now = new Date()
-      let day = now.getDay()
-      let curDate = now.getDate()
-      if (day == 0) {
-        day = 7
-      }
-
-      let gap = 7 - day + 3
-      let bookDate = curDate + gap
-      let booktime = now.setDate(bookDate)
-      return booktime
     },
-  }
+    getAdInfo(){
+      let self = this
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.$axios.get('/api/admission/show')
+      .then(function(res){
+        self.AdInfo = res.data
+      })
+    },
+    examdate () {
+      let examdate = new Date(this.AdInfo.bookdate)
+      let date = (examdate.getFullYear()) + '年' + (examdate.getMonth() + 1) + '月' + examdate.getDate() + '日'
+      return date
+    },
+},
+
 }
 </script>
 

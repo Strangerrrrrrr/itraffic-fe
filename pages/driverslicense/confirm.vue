@@ -20,10 +20,11 @@
             </el-form-item>
             <el-form-item label="考试日期">
               <el-date-picker
-                v-model="booktime"
+                v-model="bookdate"
                 type="date"
                 placeholder="选择日期"
-                value-format="timestamp"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 :disabled='true'>
               </el-date-picker>        
             </el-form-item>
@@ -43,7 +44,7 @@
                   v-for="(item, key) in examCenterInfo"
                   :key="key"
                   :label="item.exam_room"
-                  :value="item.id">
+                  :value="item.exam_room">
                 </el-option>
               </el-select>  
             </el-form-item>
@@ -112,7 +113,7 @@ export default {
     },
     onAdmission () {
       if (this.examInfo.region != '' && this.examInfo.exam_room != '') {
-        this.$router.push({path:'/driverslicense/admission'})
+        this.storeAdmission()
       } else {
         this.$message.error('请选择考场！')
       }
@@ -135,21 +136,32 @@ export default {
       .then(function(res){
         self.dlInfo = res.data
       })
+    },
+    storeAdmission () {
+      let self = this
+      this.examInfo.bookdate = this.bookdate
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.$axios.post('/api/admission/store', this.examInfo)
+      .then(function(res){
+        self.$message.success('成功预约！')
+        self.$router.push({path:'/driverslicense/admission'})
+      })
+      .catch(function(e){
+        self.$message.error('预约失败！')
+      })
     }
   },
   computed: {
-    booktime () {
+    bookdate () {
       let now = new Date()
       let day = now.getDay()
       let curDate = now.getDate()
       if (day == 0) {
         day = 7
       }
-
       let gap = 7 - day + 3
-      let bookDate = curDate + gap
-      let booktime = now.setDate(bookDate)
-      return booktime
+      let bookdate = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate() + gap)
+      return bookdate
     },
   }
 }
