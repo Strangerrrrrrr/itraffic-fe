@@ -32,6 +32,8 @@
           <el-form-item label="状态">
           <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
         </el-form-item>
+
+        <template v-if="!isConfirm">
         <el-form-item v-if="illegalItem.status!='审核中'">
           <el-button plain name="submit" title="确认违章" @click="onConfirm">
             确认
@@ -40,10 +42,11 @@
             申诉
           </el-button>
         </el-form-item>
+        </template>
 
       <template v-if="isConfirm">
           <el-card>
-            <img src="illegalItem.xxxmoney_image">
+            <img class="pay_image" :src="prefix + illegalItem.pay_image">
           </el-card>
       </template>
 
@@ -62,6 +65,7 @@ export default {
   props: ['userInfo', 'illegalItem'],
   data () {
     return {
+      prefix: 'http://localhost:8000/uploads/',
       isComplain: false,
       isConfirm: false,
     }
@@ -88,6 +92,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.pay_image {
+  width: 100%;
+  display: block;
+}
 </style>

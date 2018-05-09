@@ -7,9 +7,10 @@
             <user-info></user-info>
           </el-tab-pane>
           <el-tab-pane label="驾驶证信息">
+            <drivers-info></drivers-info>
           </el-tab-pane>
           <el-tab-pane label="行驶证信息">
-            
+            <driving-info></driving-info>
           </el-tab-pane>
           <el-tab-pane label="修改密码">
             <modify-password></modify-password>
@@ -22,6 +23,8 @@
 
 <script>
 import UserInfo from '~/components/user/UserInfo'
+import DriversInfo from '~/components/user/DriversInfo'
+import DrivingInfo from '~/components/user/DrivingInfo'
 import ModifyPassword from '~/components/user/ModifyPassword'
 export default {
   data () {
@@ -33,6 +36,8 @@ export default {
   },
   components: {
     UserInfo,
+    DriversInfo,   
+    DrivingInfo, 
     ModifyPassword
   }
 }
