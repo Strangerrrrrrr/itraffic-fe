@@ -11,16 +11,16 @@
               <el-tag>{{ dlInfo.license }}</el-tag>
             </el-form-item>
             <el-form-item label="发动机号">
-              <el-tag>{{ dlInfo.grade }}</el-tag>         
+              <el-tag>{{ dlInfo.engineID }}</el-tag>         
             </el-form-item>
             <el-form-item label="车架号">
-              <el-tag>{{ dlInfo.grade }}</el-tag>         
+              <el-tag>{{ dlInfo.vin }}</el-tag>         
             </el-form-item>
             <el-form-item label="注册时间">
-              <el-tag>{{ dlInfo.grade }}</el-tag>         
+              <el-tag></el-tag>         
             </el-form-item>
             <el-form-item label="安检情况">
-              <el-tag>{{ dlInfo.grade }}</el-tag>         
+              <el-tag></el-tag>         
             </el-form-item>
     </el-form>
 
