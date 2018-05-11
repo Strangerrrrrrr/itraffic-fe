@@ -20,14 +20,12 @@
               <el-tag>{{ dlInfo.vin }}</el-tag>         
             </el-form-item>
             <el-form-item label="注册时间">
-              <el-tag></el-tag>         
+              <el-tag>{{ dlInfo.register_time }}</el-tag>         
             </el-form-item>
             <el-form-item label="安检情况">
-              <el-tag></el-tag>         
+              <el-tag v-if="dlInfo.safe_check==0">未通过</el-tag> 
+              <el-tag v-else>已通过</el-tag>           
             </el-form-item>
-
-            <h1 v-if="dlInfo.safe_check==0">Yes</h1>
-            <h1 v-else>No</h1>
           </el-form>
         </el-card>
       </el-col>
