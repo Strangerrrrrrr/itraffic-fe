@@ -31,7 +31,7 @@
               <el-button plain name="submit" @click="onSubmit">
                 修改
               </el-button> 
-              <el-button plain name="submit" @click="onSubmit">
+              <el-button plain name="submit" @click="onChange">
                 预约换证
               </el-button>
               <el-button plain name="submit" @click="onConfirm">
@@ -104,6 +104,9 @@ export default {
     },
     onConfirm () {
       this.$router.push({path:'/driverslicense/confirm'})
+    },
+    onChange () {
+      this.$router.push({path:'/driverslicense/change'})
     }
   }
 }

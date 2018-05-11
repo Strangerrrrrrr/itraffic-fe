@@ -1,8 +1,11 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="130px" size="small">
-      <el-form-item label="姓名">
-              <el-tag id="name" name="name">{{ dlInfo.	real_name }}</el-tag>
+    <el-row :gutter="20">
+      <el-col :span="8" v-for="dlInfo in dlInfos" :key="dlInfo.id">
+        <el-card>
+          <el-form label-position="left" label-width="130px" size="small">
+            <el-form-item label="姓名">
+              <el-tag>{{ dlInfo.real_name }}</el-tag>
             </el-form-item>
             <el-form-item label="身份证">
               <el-tag>{{ dlInfo.identity }}</el-tag> 
@@ -22,8 +25,13 @@
             <el-form-item label="安检情况">
               <el-tag></el-tag>         
             </el-form-item>
-    </el-form>
 
+            <h1 v-if="dlInfo.safe_check==0">Yes</h1>
+            <h1 v-else>No</h1>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -32,11 +40,13 @@
 export default {
   data () {
     return {
-      dlInfo: '',
+      dlInfos: [],
     }
   },
   mounted () {
-    this.dlshow()
+    if (this.$store.state.access_token) {
+      this.dlshow()
+    }
   },
   methods: {
     dlshow () {
@@ -45,7 +55,7 @@ export default {
       this.$axios.get('/api/drivinglicense/show')
       .then(function(res){
         if (res.data) {
-          self.dlInfo = res.data
+          self.dlInfos = res.data
         } else {
           self.$message({
             showClose: true,
