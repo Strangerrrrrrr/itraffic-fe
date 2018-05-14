@@ -2,7 +2,7 @@
   <el-row>
     <el-col :xs='{span: 24}' :md='{span: 12, offset: 6}'>
       <el-card>
-        <el-form label-position="left" label-width="100px" v-model="examInfo">
+        <el-form label-position="left" label-width="100px" >
             <el-form-item label="考生姓名">
               <el-tag id="name" name="name">{{ userInfo.real_name }}</el-tag>
             </el-form-item>
@@ -19,7 +19,7 @@
               <el-tag>{{ deadline() }}</el-tag>         
             </el-form-item>  
             <el-form-item label="距离过期">
-              <el-tag>{{ deadline() }}</el-tag>         
+              <el-tag>{{ interval }}</el-tag>         
             </el-form-item>
             
             <el-form-item label="确认地址">
@@ -96,6 +96,20 @@ export default {
     },
     handleSuccess (res, file, fileList) {
       this.$router.go(0)
+    },
+    onLineup () {
+
+    }
+  },
+  computed: {
+    interval () {
+      let now = new Date()
+      let updated_at = new Date(this.dlInfo.updated_at)
+      console.log(now)
+      console.log(updated_at)
+      let interval = 10*365*24*60*60*1000 - (now - updated_at)
+      let day = parseInt(interval/1000/60/60/24)
+      return day + '天'
     }
   }
 }

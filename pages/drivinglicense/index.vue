@@ -27,8 +27,8 @@
               <el-tag v-else>已通过</el-tag>           
             </el-form-item>
              <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
+              <el-button type="primary" @click="submitForm('ruleForm')">预约安检</el-button>
+              <el-button @click="resetForm('ruleForm')">预约考试</el-button>
             </el-form-item>
           </el-form>
         </el-card>
