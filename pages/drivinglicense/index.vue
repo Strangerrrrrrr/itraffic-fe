@@ -1,76 +1,78 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="8" v-for="dlInfo in dlInfos" :key="dlInfo.id">
-        <el-card>
-          <el-form label-position="left" label-width="130px" size="small">
-            <el-form-item label="姓名">
-              <el-tag>{{ dlInfo.real_name }}</el-tag>
-            </el-form-item>
-            <el-form-item label="身份证">
-              <el-tag>{{ dlInfo.identity }}</el-tag> 
-            </el-form-item>
-            <el-form-item label="车牌号">
-              <el-tag>{{ dlInfo.license }}</el-tag>
-            </el-form-item>
-            <el-form-item label="发动机号">
-              <el-tag>{{ dlInfo.engineID }}</el-tag>         
-            </el-form-item>
-            <el-form-item label="车架号">
-              <el-tag>{{ dlInfo.vin }}</el-tag>         
-            </el-form-item>
-            <el-form-item label="注册时间">
-              <el-tag>{{ dlInfo.register_time }}</el-tag>         
-            </el-form-item>
-            <el-form-item label="安检情况">
-              <el-tag v-if="dlInfo.safe_check==0">未通过</el-tag> 
-              <el-tag v-else>已通过</el-tag>           
-            </el-form-item>
-             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">预约安检</el-button>
-              <el-button @click="resetForm('ruleForm')">预约考试</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </el-col>
-    </el-row>
+    <el-steps :active="active" finish-status="success">
+      <el-step title="业务须知"></el-step>
+      <el-step title="基本信息"></el-step>
+      <el-step title="选择时间"></el-step>
+      <el-step title="选择地点"></el-step>
+      <el-step title="确认预约"></el-step>
+      <el-step title="完成预约"></el-step>
+    </el-steps>
+    <notice></notice>
+    <region></region>
+    <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
   </div>
 </template>
 
 <script>
-
+import Notice from '~/components/drivinglicense/Notice.vue'
+import Region from '~/components/drivinglicense/Region.vue'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      dlInfos: [],
+      version: '',
+      active: 0
     }
+  },
+  head () {
+    return {
+      title: this.title,
+    }
+  },
+  components: {
+    Notice,
+    Region
   },
   mounted () {
-    if (this.$store.state.access_token) {
-      this.dlshow()
+    if (!this.$store.state.access_token) {
+      this.prompt()
     }
   },
+  computed: {
+  // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters([
+      'getStorage',
+      // ...
+    ])
+  },
   methods: {
-    dlshow () {
-      let self = this
-      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
-      this.$axios.get('/api/drivinglicense/show')
-      .then(function(res){
-        if (res.data) {
-          self.dlInfos = res.data
-        } else {
-          self.$message({
-            showClose: true,
-            message: '您当前还未获得驾驶证！',
-            type: 'error'
-          })
-        }
-      })
+    prompt () {
+      if (this.$store.state.tempInfo) {
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: this.$store.state.tempInfo
+        })
+        this.$store.commit('SET_TEMP_INFO', '')
+      }
     },
+    next() {
+        if (this.active++ > 6) this.active = 0;
+      }
+  },
+  watch: {
+    '$store.state.tempInfo': 'prompt'
   }
 }
 </script>
 
 <style>
-
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 </style>

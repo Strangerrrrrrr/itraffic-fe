@@ -3,13 +3,13 @@
     <el-col :xs='{span: 24}' :md='{span: 12, offset: 6}'>
       <el-card>
         <el-form label-position="left" label-width="100px" >
-            <el-form-item label="考生姓名">
+            <el-form-item label="真实姓名">
               <el-tag id="name" name="name">{{ userInfo.real_name }}</el-tag>
             </el-form-item>
             <el-form-item label="证件号码">
               <el-tag>{{ userInfo.identity }}</el-tag> 
             </el-form-item>
-            <el-form-item label="手机号码">
+            <el-form-item label="联系方式">
               <el-tag>{{ userInfo.phone }}</el-tag>
             </el-form-item>
             <el-form-item label="准驾车型">
@@ -22,12 +22,12 @@
               <el-tag>{{ interval }}</el-tag>         
             </el-form-item>
             
-            <el-form-item label="确认地址">
-              <el-tag>{{ deadline() }}</el-tag>         
+            <el-form-item label="换证原因">
+              <el-tag>期满换证</el-tag>         
             </el-form-item>     
 
              <el-form-item>
-            <el-button plain name="submit" @click="onLineup">
+            <el-button plain name="submit" @click="open">
               确认预约
             </el-button> 
             </el-form-item>
@@ -97,9 +97,23 @@ export default {
     handleSuccess (res, file, fileList) {
       this.$router.go(0)
     },
-    onLineup () {
-
-    }
+   open() {
+        this.$confirm('距离您的驾驶证过期还有' + this.interval + '，确认预约吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      }
   },
   computed: {
     interval () {
