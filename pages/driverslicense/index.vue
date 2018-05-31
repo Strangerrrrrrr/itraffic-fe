@@ -103,7 +103,16 @@ export default {
       return date
     },
     onConfirm () {
-      this.$router.push({path:'/driverslicense/confirm'})
+      let self = this
+      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+      this.$axios.get('/api/admission/show')
+      .then(function(res){
+        if(!res.data) {
+          self.$router.push({path:'/driverslicense/confirm'})
+        } else {
+          self.$message.warning('你当前已有预约信息，请前往个人中心查看！')
+        }
+      })
     },
     onChange () {
       this.$router.push({path:'/driverslicense/change'})

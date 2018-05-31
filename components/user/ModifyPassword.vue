@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="130px" size="small">
+    <el-form :model="ruleForm" ref="ruleForm" label-position="left" label-width="130px" size="small">
       <el-form-item label="输入新密码" prop="pass">
           <el-input type="password" v-model="ruleForm.password" auto-complete="off"></el-input>
       </el-form-item>
@@ -60,20 +60,22 @@ export default {
         let self = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.register()
+            this.modifyPassword()
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      register () {
+      modifyPassword () {
         let self = this
-        this.$axios.post('/api/users', this.ruleForm)
+        this.$axios.setToken(this.$store.state.access_token, 'Bearer')
+        this.$axios.post('/api/users/pass', this.ruleForm)
         .then(function(res){
-          self.$router.push({path: '/'})
+          self.$message.success('修改成功！')
         })
         .catch(function(e){
+          console.log(e)
           let errors = e.response.data.errors
           let message = ''
           console.log(errors)

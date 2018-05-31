@@ -19,7 +19,7 @@
               <el-tag>{{ deadline() }}</el-tag>         
             </el-form-item>  
             <el-form-item label="距离过期">
-              <el-tag>{{ interval }}</el-tag>         
+              <el-tag>{{ interval }} 天</el-tag>         
             </el-form-item>
             
             <el-form-item label="换证原因">
@@ -27,7 +27,7 @@
             </el-form-item>     
 
              <el-form-item>
-            <el-button plain name="submit" @click="open">
+            <el-button plain name="submit" @click="open" :disabled="interval>90">
               确认预约
             </el-button> 
             </el-form-item>
@@ -98,19 +98,19 @@ export default {
       this.$router.go(0)
     },
    open() {
-        this.$confirm('距离您的驾驶证过期还有' + this.interval + '，确认预约吗？', '提示', {
+        this.$confirm('距离您的驾驶证过期还有' + this.interval + '天，确认预约吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: '预约成功!'
           });
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '取消预约！'
           });          
         });
       }
@@ -123,7 +123,10 @@ export default {
       console.log(updated_at)
       let interval = 10*365*24*60*60*1000 - (now - updated_at)
       let day = parseInt(interval/1000/60/60/24)
-      return day + '天'
+      if (day < 0) {
+        day = 0
+      }
+      return day
     }
   }
 }

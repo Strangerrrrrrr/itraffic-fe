@@ -108,7 +108,6 @@ export default {
       this.$axios.post('/api/examcenter/search', searchForm)
       .then(function(res){
         self.examCenterInfo = res.data
-        self.examInfo.exam_room = res.data[0]
       })
     },
     onAdmission () {
@@ -160,7 +159,8 @@ export default {
         day = 7
       }
       let gap = 7 - day + 3
-      let bookdate = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate() + gap)
+      now.setDate(now.getDate()+gap)
+      let bookdate = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
       return bookdate
     },
   }

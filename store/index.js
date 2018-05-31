@@ -12,6 +12,7 @@ const store = () => new Vuex.Store({
     user_id: '',
     tempInfo: '',
     valine: false,
+    canSubmit: true,
   },
   getters: {
     getStorage: function (state) {
@@ -41,6 +42,9 @@ const store = () => new Vuex.Store({
     },
     SET_VALINE: function (state, valine) {
       state.valine = valine
+    },
+    SET_CANSUBMIT: function (state, canSubmit) {
+      state.canSubmit = canSubmit
     }
   },
 })

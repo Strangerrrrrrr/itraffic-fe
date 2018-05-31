@@ -1,29 +1,33 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="130px" size="small">
-      <el-form-item label="姓名">
-              <el-tag id="name" name="name">{{ dlInfo.	real_name }}</el-tag>
-            </el-form-item>
-            <el-form-item label="身份证">
-              <el-tag>{{ dlInfo.identity }}</el-tag> 
-            </el-form-item>
-            <el-form-item label="准驾车型">
-              <el-tag>{{ dlInfo.vehicle_type }}</el-tag>
-            </el-form-item>
-            <el-form-item label="领证日期">
-              <el-tag>{{ receivetime() }}</el-tag>
-            </el-form-item>
-            <el-form-item label="到期日期">
-              <el-tag>{{ deadline() }}</el-tag>           
-            </el-form-item>
-            <el-form-item label="更新时间">
-              <el-tag>{{ updatetime() }}</el-tag>
-            </el-form-item>
-            <el-form-item label="剩余分数">
-              <el-tag>{{ dlInfo.grade }}</el-tag>         
-            </el-form-item>
-    </el-form>
-
+    <template v-if="dlInfo">
+      <el-form label-position="left" label-width="130px" size="small">
+        <el-form-item label="姓名">
+          <el-tag id="name" name="name">{{ dlInfo.real_name }}</el-tag>
+        </el-form-item>
+        <el-form-item label="身份证">
+          <el-tag>{{ dlInfo.identity }}</el-tag> 
+        </el-form-item>
+        <el-form-item label="准驾车型">
+          <el-tag>{{ dlInfo.vehicle_type }}</el-tag>
+        </el-form-item>
+        <el-form-item label="领证日期">
+          <el-tag>{{ receivetime() }}</el-tag>
+        </el-form-item>
+        <el-form-item label="到期日期">
+          <el-tag>{{ deadline() }}</el-tag>           
+        </el-form-item>
+        <el-form-item label="更新时间">
+          <el-tag>{{ updatetime() }}</el-tag>
+        </el-form-item>
+        <el-form-item label="剩余分数">
+          <el-tag>{{ dlInfo.grade }}</el-tag>         
+        </el-form-item>
+      </el-form>
+    </template>
+    <template v-else>
+      您当前没有绑定驾驶证~
+    </template>
   </div>
 </template>
 

@@ -6,7 +6,7 @@
     </div>
     <div class="text item" v-for="(item, key) in newsInfo.data" :key="key">
         <i class="fas fa-info-circle"></i>
-        <a href="">
+        <a :href="'/news?id='+item.id">
           {{ item.title }}
           <span style="float:right;"> {{ item.created_at }} </span>
         </a>
