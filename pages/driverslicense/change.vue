@@ -97,7 +97,7 @@ export default {
     handleSuccess (res, file, fileList) {
       this.$router.go(0)
     },
-   open() {
+    open() {
         this.$confirm('距离您的驾驶证过期还有' + this.interval + '天，确认预约吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -114,7 +114,7 @@ export default {
           });          
         });
       }
-  },
+    },
   computed: {
     interval () {
       let now = new Date()

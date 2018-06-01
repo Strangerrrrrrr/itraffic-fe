@@ -62,9 +62,6 @@
               <el-form-item label="描述">
                 <el-card style="margin: 0px">{{ illegalItem.illegal_code.description }}</el-card>
               </el-form-item>
-               <el-form-item label="状态">
-                <el-tag color="#fff"> {{ illegalItem.status }}</el-tag>
-              </el-form-item>
 
           </el-form>
         </el-card>

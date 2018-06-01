@@ -1,34 +1,38 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="130px" size="small">
-      <el-form-item label="姓名">
-        <el-tag>{{ changeInfo.name }}</el-tag>
-      </el-form-item>
-      <el-form-item label="身份证">
-        <el-tag>{{ changeInfo.identity }}</el-tag> 
-      </el-form-item>
-      <el-form-item label="准驾车型">
-        <el-tag>{{ changeInfo.vehicle_type }}</el-tag>
-      </el-form-item>
-      <el-form-item label="联系方式">
-        <el-tag>{{ changeInfo.phone }}</el-tag>
-      </el-form-item>
-      <el-form-item label="编号">
-        <el-tag>{{ changeInfo.id }}</el-tag>
-      </el-form-item>
-      <el-form-item label="备注：">
-        <el-input
-          type="textarea"
-          disabled=""
-          style="width: 400px"
-          :autosize="{ minRows: 4, maxRows: 4}"
-          placeholder="请输入内容"
-          v-model="prompt">
-        </el-input>
-          
-      </el-form-item>
-    </el-form>
-
+    <template v-if="changeInfo">
+      <el-form label-position="left" label-width="130px" size="small">
+        <el-form-item label="姓名">
+          <el-tag>{{ changeInfo.name }}</el-tag>
+        </el-form-item>
+        <el-form-item label="身份证">
+          <el-tag>{{ changeInfo.identity }}</el-tag> 
+        </el-form-item>
+        <el-form-item label="准驾车型">
+          <el-tag>{{ changeInfo.vehicle_type }}</el-tag>
+        </el-form-item>
+        <el-form-item label="联系方式">
+          <el-tag>{{ changeInfo.phone }}</el-tag>
+        </el-form-item>
+        <el-form-item label="编号">
+          <el-tag>{{ changeInfo.id }}</el-tag>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input
+            type="textarea"
+            disabled=""
+            style="width: 400px"
+            :autosize="{ minRows: 4, maxRows: 4}"
+            placeholder="请输入内容"
+            v-model="prompt">
+          </el-input>
+            
+        </el-form-item>
+      </el-form>
+    </template>
+    <template v-else>
+      您当前没有预约任何换证~
+    </template>
   </div>
 </template>
 
@@ -51,8 +55,17 @@ export default {
       this.$axios.setToken(this.$store.state.access_token, 'Bearer')
       this.$axios.get('/api/change/show')
       .then(function(res){
+          if (res.data) {
           self.changeInfo = res.data
           console.log(self.changeInfo)
+        } else {
+          self.$message({
+            showClose: true,
+            message: '您当前还未获得驾驶证！',
+            type: 'error'
+          })
+        }
+         
       })
     },
   }
