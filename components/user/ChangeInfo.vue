@@ -58,13 +58,7 @@ export default {
           if (res.data) {
           self.changeInfo = res.data
           console.log(self.changeInfo)
-        } else {
-          self.$message({
-            showClose: true,
-            message: '您当前还未获得驾驶证！',
-            type: 'error'
-          })
-        }
+        } 
          
       })
     },

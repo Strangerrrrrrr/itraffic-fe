@@ -80,41 +80,38 @@ export default {
       let date = (updatetime.getFullYear()) + '年' + (updatetime.getMonth() + 1) + '月' + updatetime.getDate() +'日'
       return date
     },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
-    },
-    submitUpload() {
-      this.$refs['upload'].submit()
-    },
-    beforeUpload() {
-      this.userData.user_id = this.$store.state.user_id
-      this.headers.Authorization = 'Bearer ' + this.$store.state.access_token
-      this.$axios.setToken(this.$store.state.access_token, 'Bearer')
-    },
-    handleSuccess (res, file, fileList) {
-      this.$router.go(0)
-    },
     open() {
-        this.$confirm('距离您的驾驶证过期还有' + this.interval + '天，确认预约吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '预约成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消预约！'
-          });          
-        });
-      }
+      let self = this
+      this.$confirm('距离您的驾驶证过期还有' + this.interval + '天，确认预约吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        self.storeBook()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消预约！'
+        })
+      })
     },
+    storeBook () {
+      let changeInfo = {
+        name: this.userInfo.name,
+        identity: this.userInfo.identity,
+        vehicle_type: this.dlInfo.vehicle_type,
+        phone: this.userInfo.phone
+      }
+      let self = this
+      this.$axios.post('api/change/store', changeInfo)
+      .then(function(res){
+        self.$message({
+          type: 'success',
+          message: '预约成功!'
+        })
+      })
+    }
+  },
   computed: {
     interval () {
       let now = new Date()

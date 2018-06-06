@@ -2,7 +2,7 @@
   <div class="footer">
     <hr>
     <div class="copyright">
-      <span> 陆冉钦 </span>
+      <span> itraffic </span>
       <i class="fas fa-cloud"></i>
       {{ copyright }}
       <hr>
@@ -34,26 +34,26 @@ export default {
           color: 'black',
           icon: 'fab fa-github',
           label: 'GitHub 项目代码',
-          href: 'https://github.com/YunYouJun/element-theme-ink'
+          href: 'https://github.com/Strangerrrrrrr'
         },
         weibo: {
           color: '#DB2828',
           icon: 'fab fa-weibo',
-          label: '微博：机智的云游君',
-          href: 'http://weibo.com/jizhideyunyoujun'
+          label: '微博：sstrangerrr',
+          href: 'http://weibo.com/sstrangerrr'
         },
         email: {
           color: '#409EFF',
           icon: 'fas fa-envelope',
-          label: '邮箱：me@yunyoujun.cn',
-          href: 'mailto:me@yunyoujun.cn'
+          label: '邮箱：770604764@qq.com',
+          href: 'mailto:770604764@qq.com'
         },
-        blog: {
-          color: '#6435C9',
-          icon: 'fas fa-globe',
-          label: '博客：yunyoujun.cn',
-          href: 'http://www.yunyoujun.cn'
-        }
+        // blog: {
+        //   color: '#6435C9',
+        //   icon: 'fas fa-globe',
+        //   label: '博客：770604764@qq.com',
+        //   href: '770604764@qq.com'
+        // }
       }
     }
   },

@@ -25,7 +25,6 @@
       </el-form-item>
       <el-form-item>
           <el-button plain @click="Logout"> 注销 </el-button>
-          <el-button plain > 修改信息 </el-button>
       </el-form-item>
     </el-form>
 

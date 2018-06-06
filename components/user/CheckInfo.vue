@@ -62,12 +62,6 @@ export default {
       .then(function(res){
         if (res.data) {
           self.checkInfos = res.data
-        } else {
-          self.$message({
-            showClose: true,
-            message: '您当前还未预约安检！',
-            type: 'error'
-          })
         }
       })
     },

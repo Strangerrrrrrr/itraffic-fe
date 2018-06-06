@@ -59,13 +59,7 @@ export default {
       .then(function(res){
         if (res.data) {
           self.dlInfos = res.data
-        } else {
-          self.$message({
-            showClose: true,
-            message: '您当前还未获得行驶证！',
-            type: 'error'
-          })
-        }
+        } 
       })
     },
   }

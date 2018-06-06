@@ -15,14 +15,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-   props: ['saveStatus'],
-   watch: {
-    saveStatus () {
-      if (this.saveStatus===true) {
-        this.storeTestInfo()
-      }
-    }
-   },
+  props: ['saveStatus'],
   data () {
     return {
       version: '',
@@ -39,6 +32,7 @@ export default {
     
   },
   mounted () {
+    this.$store.commit('SET_CANSUBMIT', true)
     if (!this.$store.state.access_token) {
       this.prompt()
     }
@@ -61,9 +55,6 @@ export default {
         this.$store.commit('SET_TEMP_INFO', '')
       }
     },
-    next() {
-        if (this.active++ > 6) this.active = 0;
-      }
   },
   watch: {
     '$store.state.tempInfo': 'prompt'
